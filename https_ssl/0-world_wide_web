@@ -5,7 +5,8 @@ display_subdomain_info() {
     local subdomain=$1
     local record_type=$2
     local destination=$3
-    echo "The subdomain $subdomain is a $record_type record and points to $destination"
+    local ip_address=$(dig +short $destination)
+    echo "The subdomain $subdomain is a $record_type record and points to $ip_address"
 }
 
 # Check if domain argument is provided

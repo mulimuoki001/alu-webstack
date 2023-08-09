@@ -1,0 +1,30 @@
+defaults
+    mode http
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend http-in
+    bind *:80
+    bind *:443 ssl crt /etc/letsencrypt/live/www.mulimuoki.tech/fullchain.pem
+    mode http
+    default_backend web-backend
+
+frontend http_frontend
+    bind *:80
+    mode http
+    option httplog
+    redirect scheme https code 301 if !{ ssl_fc }
+
+
+
+backend web-backend
+    balance roundrobin
+    server web-01 54.81.49.198:80 check
+    server web-02 34.226.195.209:80 check
+
+
+frontend https_frontend
+    bind *:443 ssl crt /etc/letsencrypt/live/www.mulimuoki.tech/fullchain.pem
+    mode http
+    default_backend web-backend
